@@ -5,7 +5,6 @@ export default function AdminDash() {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    // Fetch users from backend when the component mounts
     async function fetchUsers() {
       try {
         const response = await axios.get('/api/auth/admin/users');
@@ -19,29 +18,33 @@ export default function AdminDash() {
 
   return (
     <div>
-      <h2>Admin Dashboard</h2>
-      <h3>Users List</h3>
-      <table>
+        <h1 className='text-3xl text-center font-semibold my-7'>Admin Dashboard</h1>
+      <table className="table-auto w-full">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Role</th>
+            <th className="px-4 py-2">Name</th>
+            <th className="px-4 py-2">Email</th>
+            <th className="px-4 py-2">Profile Image</th>
+            <th className="px-4 py-2">Action</th>
           </tr>
         </thead>
         <tbody>
           {users.map(user => (
-            <tr key={user.id}>
-              <td>{user.id}</td>
-              <td>{user.name}</td>
-              <td>{user.email}</td>
-              <td>{user.role}</td>
+            <tr key={user._id}>
+              <td className="border px-4 py-2">{user.username}</td>
+              <td className="border px-4 py-2">{user.email}</td>
+              <td className="border px-4 py-2">
+                <img src={user.profilePicture} alt={user.name} className="w-16 h-16 rounded-full" />
+              </td>
+              <td className="border px-4 py-2">
+              <button className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mr-2" onClick={() => deleteUser(user._id)}>Delete</button>
+              <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+               onClick={() => editUser(user._id)}>Edit</button>
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
-      {/* Additional admin functionalities can be added here */}
     </div>
   );
 }
