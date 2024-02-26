@@ -5,6 +5,7 @@ import About from "./pages/About";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import Profile from "./pages/Profile";
+import AdminDashboard from "./pages/AdminDash"
 import Header from "./components/Header";
 import PrivateRoute from "./components/PrivateRoute";
 
@@ -22,6 +23,13 @@ function App() {
           <Route path="/profile" element={<Profile />} />
         </Route>
         
+        <Route path="/admin/signin" element={<SignIn userType="admin" />} />
+        
+        
+        <Route element={<PrivateRoute userType="admin" />}>
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        </Route>
+
       </Routes>
     </BrowserRouter>
   );

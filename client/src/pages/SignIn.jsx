@@ -8,7 +8,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import OAuth from "../components/OAuth";
 
-export default function SignIn() {
+export default function SignIn({userType}) {
   const [formData, setFormData] = useState({});
   const { loading, error } = useSelector((state) => state.user);
 
@@ -25,8 +25,9 @@ export default function SignIn() {
 
     try {
       dispatch(signInStart());
+      const endpoint = userType === 'admin' ? '/api/auth/admin/signin' : '/api/auth/signin';
 
-      const res = await fetch("/api/auth/signin", {
+      const res = await fetch(endpoint, {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -41,15 +42,22 @@ export default function SignIn() {
         return;
       }
       dispatch(signInSuccess(data));
-      navigate("/");
+      if (userType === 'admin') {
+        navigate("/admin/dashboard")
+      } else {
+        navigate("/");
+      }
+
     } catch (error) {
       dispatch(signInFailure(error));
     }
   };
+ // console.log(userType);       
 
   return (
     <div className="p-3 max-w-lg mx-auto">
-      <h1 className=" text-3xl text-center font-semibold my-7">Sign In</h1>
+      <h1 className='text-3xl text-center font-semibold my-7'> 
+      {userType === "admin" ? "Admin Sign In" : "Sign In"}</h1>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <input
@@ -72,7 +80,8 @@ export default function SignIn() {
         >
           {loading ? "Loading..." : "Sign in"}
         </button>
-        <OAuth />
+        {userType !== "admin" && <OAuth />}
+
       </form>
 
       <div className="flex gap-2 mt-5">
