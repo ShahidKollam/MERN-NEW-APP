@@ -32,11 +32,34 @@ export const usersList = async (req, res, next) => {
     const users = await User.find({ isAdmin: false });
 
     if (users.length === 0) {
-        return res.status(404).json({ message: "No users found" });
-      }
-      //console.log(users);
-      res.status(200).json(users);
+      return res.status(404).json({ message: "No users found" });
+    }
+    //console.log(users);
+    res.status(200).json(users);
   } catch (error) {
+    next(error);
+  }
+};
+
+export const addUser = async (req, res, next) => {
+  try {
+    console.log(req.body);
+    const { username, email, password } = req.body;
+    const hashedPassword = bcryptjs.hashSync(password, 8);
+
+    const newUser = new User({ username, email, password: hashedPassword });
+    const saveUser = await newUser.save();
+    console.log(saveUser);
+
+    res.status(201).json({ message: "New User created" });
+  } catch (error) {
+    console.log(error);
+    if (error.code === 11000 && error.keyPattern ) {
+      // If duplicate key error for the 'email' field, send custom error message
+      // res.status(400).json({ success: false, message: "User with this email already exists" });
+      return next(errorHandler(401, "User with this email already exists"));
+
+    }
     next(error);
   }
 };

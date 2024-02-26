@@ -5,6 +5,7 @@ import About from "./pages/About";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import Profile from "./pages/Profile";
+import AddUser from "./pages/AddUser";
 import AdminDashboard from "./pages/AdminDash"
 import Header from "./components/Header";
 import PrivateRoute from "./components/PrivateRoute";
@@ -29,6 +30,10 @@ function App() {
         <Route element={<PrivateRoute userType="admin" />}>
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         </Route>
+
+
+        <Route path="/admin/add-user" element={<AddUser />} />
+
 
       </Routes>
     </BrowserRouter>

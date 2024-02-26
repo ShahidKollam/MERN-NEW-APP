@@ -1,10 +1,14 @@
 import express from "express";
-import { adminSignin, usersList } from "../controllers/admin.controller.js";
+import {
+  adminSignin,
+  usersList,
+  addUser,
+} from "../controllers/admin.controller.js";
 
-const router = express.Router(); 
+const router = express.Router();
 
 router.post("/signin", adminSignin);
-router.get('/users', usersList)
-
+router.get("/users", usersList);
+router.post("/addUser", addUser);
 
 export default router;
