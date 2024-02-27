@@ -9,6 +9,7 @@ import AddUser from "./pages/AddUser";
 import AdminDashboard from "./pages/AdminDash"
 import Header from "./components/Header";
 import PrivateRoute from "./components/PrivateRoute";
+import EditUser from "./pages/EditUser";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
 
 
         <Route path="/admin/add-user" element={<AddUser />} />
+        <Route path="/admin/edit-user/:user_id" element={<EditUser />} />
 
 
       </Routes>

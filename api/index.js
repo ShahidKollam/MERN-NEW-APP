@@ -6,9 +6,9 @@ import authRoutes from "./routes/auth.route.js";
 import adminRoutes from "./routes/admin.route.js"
 import cookieParser from "cookie-parser";
 
-
+      
 dotenv.config();
-
+ 
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGO);

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function AdminDash() {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchUsers() {
@@ -22,10 +23,28 @@ export default function AdminDash() {
     user.username.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const editUser = async () => {};
+  const editUser = async (user_id) => {
+    navigate(`/admin/edit-user/${user_id}`);
+  };
+
+
+  
+
+  const deleteUser = async (user_id) => {
+    try {
+      await axios.delete(`/api/auth/admin/delete/${user_id}`);
+      
+      setUsers(users.filter(user => user._id !== user_id));
+      
+      console.log("User deleted successfully");
+    } catch (error) {
+      console.error("Error deleting user:", error);
+    }
+  };
+  
 
   return (
-    <div className="overflow-x-auto mx-4">
+    <div className="overflow-x-auto mx-16">
       <h1 className="text-3xl text-center font-semibold my-7">
         Admin Dashboard
       </h1>
@@ -43,7 +62,7 @@ export default function AdminDash() {
           placeholder="Search users"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full p-2 border border-gray-300 rounded"
+          className="w-full p-2 border border-gray-500 rounded"
         />
       </div>
       <table className="table-auto w-full border-collapse border border-gray-400">
@@ -68,11 +87,17 @@ export default function AdminDash() {
                 />
               </td>
               <td className="border px-4 py-2">
-                <button className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mr-2">
-                  Delete
-                </button>
-                <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                <button
+                  onClick={() => editUser(user._id)}
+                  className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mr-2"
+                >
                   Edit
+                </button>
+                <button
+                  onClick={() => deleteUser(user._id)}
+                  className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+                >
+                  Delete
                 </button>
               </td>
             </tr>

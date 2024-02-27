@@ -55,11 +55,28 @@ export const addUser = async (req, res, next) => {
   } catch (error) {
     console.log(error);
     if (error.code === 11000 && error.keyPattern ) {
-      // If duplicate key error for the 'email' field, send custom error message
       // res.status(400).json({ success: false, message: "User with this email already exists" });
       return next(errorHandler(401, "User with this email already exists"));
 
     }
+    next(error);
+  }
+};
+
+
+export const adminDeleteUser = async (req, res, next) => {
+
+  try {
+    const deletedUser = await User.findByIdAndDelete(req.params.id);
+
+
+    if (!deletedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+
+    res.status(200).json("User has been deleted");
+  } catch (error) {
     next(error);
   }
 };
