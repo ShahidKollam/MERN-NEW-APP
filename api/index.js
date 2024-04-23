@@ -5,7 +5,7 @@ import userRoutes from "./routes/user.route.js";
 import authRoutes from "./routes/auth.route.js";
 import adminRoutes from "./routes/admin.route.js"
 import cookieParser from "cookie-parser";
-
+import path from "path";
       
 dotenv.config();
  
@@ -18,12 +18,21 @@ const connectDB = async () => {
     process.exit(1);
   }
 };
-
 connectDB();
 
+const __dirname = path.resolve()
+
 const app = express();
+
+app.use(express.static(path.join(__dirname, "/client/dist")))
+
+app.get("*", (req,res) => {
+  res.sendFile(path.resolve(__dirname, "client", "dist", "index.html"))
+})
+
 app.use(express.json());
 app.use(cookieParser())
+
 app.listen(4000, () => {
   console.log(`Server running on http://localhost:4000/`);
 });
