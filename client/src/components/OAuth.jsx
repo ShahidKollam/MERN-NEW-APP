@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { signInSuccess } from "../redux/user/userSlice"; 
 import { useNavigate } from "react-router-dom";
 
+
 export default function OAuth() {
   const dispatch = useDispatch();
   const navigate = useNavigate()
@@ -26,7 +27,7 @@ export default function OAuth() {
           photo: result.user.photoURL,
         }),
       });
-      console.log("data",res);
+      console.log("data", res);
 
       const data = await res.json();
       dispatch(signInSuccess(data));
